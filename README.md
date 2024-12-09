@@ -1,5 +1,3 @@
-# audio_transmitter
-Transmit Audio across devices
 # Audo transmitter
 Transmit Audio across devices such as phones, tablets, etc.
 <hr>
