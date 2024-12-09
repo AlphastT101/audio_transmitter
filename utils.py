@@ -87,3 +87,14 @@ def handle_device_selection(selected_device_id_str, valid_devices):
             selected_device_id = int(input('Invalid device ID, please try again: '))
 
     return selected_device_id
+
+def get_lan_ip(socket):
+    try:
+        # Create a socket connection to a dummy address to get the LAN IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))  # Google Public DNS (just to determine the local interface)
+        lan_ip = s.getsockname()[0]
+        s.close()
+        return f"\033[95m{lan_ip}\033[0m"
+    except Exception as e:
+        return f"Error: {e}"

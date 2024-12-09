@@ -2,10 +2,10 @@ import argparse
 import socket
 import sounddevice as sd
 
-DEFAULT_SERVER_IP = '192.168.0.101'
+DEFAULT_SERVER_IP = input("Enter the LAN IP of the target device: ")
 DEFAULT_SERVER_PORT = 9999
 BUFFER_SIZE = 1024
-SAMPLE_RATE = 48000  # Match your output device's sample rate
+SAMPLE_RATE = 48000
 
 def audio_callback(indata, frames, time, status, sock):
     if status:

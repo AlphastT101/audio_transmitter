@@ -5,6 +5,7 @@ import sys
 import pyaudio
 import utils
 
+from utils import get_lan_ip
 
 # default configuration parameters
 DEFAULT_SERVER_PORT = 9999
@@ -18,8 +19,11 @@ def run_socket_connection(port, audio_stream):
             serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             serversocket.bind(('', int(port)))
             serversocket.listen(5)
-
+            print()
+            ip = get_lan_ip(socket)
+            print(f"Your LAN IP: {ip}")
             print('Waiting for client connection...')
+
             transmitter, addr = serversocket.accept()
             print('Client connected.')
 
