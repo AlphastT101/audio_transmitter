@@ -79,10 +79,10 @@ def handle_device_selection(selected_device_id_str, valid_devices):
 
     if not valid_device_selected:
         # device ID invalid or not specified, prompt for selection
-        print('Available devices:')
+        print('\033[36mAvailable devices:')
         print_device_dict(valid_devices)
-
-        selected_device_id = int(input('Choose a device from the list above: '))
+        print()
+        selected_device_id = int(input('Choose a device as a speaker from the list above: \033[0m'))
         while selected_device_id not in valid_devices:
             selected_device_id = int(input('Invalid device ID, please try again: '))
 

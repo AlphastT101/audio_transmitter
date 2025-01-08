@@ -1,3 +1,4 @@
+import sys
 import utils
 import socket
 import pyaudio
@@ -19,7 +20,7 @@ def run_socket_connection(port, audio_stream):
             print()
             ip = utils.get_lan_ip(socket)
             print(f"Your LAN IP: {ip}")
-            print(f"Your PORT: {port}")
+            print(f"Your PORT: \033[95m{port}\033[0m")
             print('Waiting for client connection...')
             transmitter, addr = serversocket.accept()
             print('Client connected.')
