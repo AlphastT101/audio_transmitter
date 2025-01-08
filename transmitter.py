@@ -1,9 +1,9 @@
-import argparse
+# import argparse
 import socket
 import sounddevice as sd
 
 DEFAULT_SERVER_IP = input("Enter the LAN IP of the target device: ")
-DEFAULT_SERVER_PORT = 9999
+DEFAULT_SERVER_PORT = int(input("Enter the port of the target device: "))
 BUFFER_SIZE = 1024
 SAMPLE_RATE = 48000
 
@@ -13,27 +13,33 @@ def audio_callback(indata, frames, time, status, sock):
     sock.send(indata.tobytes())
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-ip', help="The server's IP address (default: "
-                                    + str(DEFAULT_SERVER_IP) + ")",
-                        default=DEFAULT_SERVER_IP)
-    parser.add_argument('-p', '--port', help="The server's port to connect "
-                                             "to (default: " + str(DEFAULT_SERVER_PORT) + ")",
-                        default=DEFAULT_SERVER_PORT)
-    parser.add_argument('-d', '--device', help="The audio device index or name for loopback capture.",
-                        default=None)
-    args = parser.parse_args()
 
-    # List devices if no device is provided
-    if args.device is None:
-        print("Available devices:")
-        print(sd.query_devices())
-        device = int(input("Choose one(must be an int): "))
+    devices = sd.query_devices()
+    print(f"\033[36mAvailable devices:\n {devices}\033[0m")
+
+    # Fine the stereo device
+    stereo_device = None
+    for index, device in enumerate(devices):
+        if "Stereo" in device['name']:
+            stereo_device = index
+            print()
+            print(f"\033[34mDetected {index} as the stereo speaker: {device['name']}\033[0m")
+            break
+
+    if stereo_device is not None:
+        user_input = input("\033[34mJust hit Enter to continue with this device, or enter a number to select a custom one(hit enter if you don't know what you're doing):\033[0m")
+        if user_input.strip():
+            selected_device = int(user_input)
+        else:
+            selected_device = stereo_device
+    else:
+        print("No stereo device detected. Please select a device manually.")
+        selected_device = int(input("Enter the device number: "))
 
     # Establish connection
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("Connecting to server...")
-    sock.connect((args.ip, int(args.port)))
+    sock.connect((DEFAULT_SERVER_IP, int(DEFAULT_SERVER_PORT)))
     print("Connected.")
 
     # Start audio stream
@@ -43,7 +49,7 @@ def main():
                         samplerate=SAMPLE_RATE,
                         dtype='int16',
                         blocksize=BUFFER_SIZE,
-                        device=device):  # Replace with your chosen device index
+                        device=selected_device):
 
         input('Press Enter to stop streaming...')
 
