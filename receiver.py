@@ -25,20 +25,18 @@ def run_socket_connection(port, audio_stream):
 
             print("Waiting for the transmitter to connect...")
             transmitter, addr = serversocket.accept()
-            print('Transmitter connected.')
+            print('Transmitter connected, started audio stream.')
 
             while True:
                 data = transmitter.recv(BUFFER_SIZE)
-                if not data:  # Check if the client has disconnected
-                    break
-                
+                if not data: break
                 audio_stream.write(data)
 
         except (ConnectionResetError, ConnectionAbortedError) as e:
             print(f"Connection error: {str(e)}")
         finally:
             serversocket.close()
-            print("Client disconnected, server closed.")
+            break
 
 
 
@@ -71,6 +69,5 @@ def main():
         print('Shutting down')
         stream.close()
         audio.terminate()
-
 
 main()

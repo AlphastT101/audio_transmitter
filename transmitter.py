@@ -37,17 +37,16 @@ def main():
         print("No stereo device detected. Please select a device manually.")
         selected_device = int(input("Enter the device number: "))
 
+    print()
     addr = input("Enter the LAN IP address of the receiver device(the ip that is printed after running receiver.py on the target device): ")
 
     # Connect to the detected receiver
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print("Connecting to server...")
+    print("Connecting to the receiver...")
     try:
-        sock.connect(addr, 9678)
-        print("Connected.")
+        sock.connect((addr, 9678))
+        print("Connected, started audio stream.")
 
-        # Start audio stream
-        print("Starting audio stream...")
         with sd.InputStream(callback=lambda indata, frames, time, status: audio_callback(indata, frames, time, status, sock),
                             channels=2,  # Stereo
                             samplerate=SAMPLE_RATE,
@@ -59,7 +58,6 @@ def main():
         print(f"Error during connection or streaming: {e}")
     finally:
         sock.close()
-        print("Stopped streaming.")
 
 if __name__ == "__main__":
     main()
