@@ -4,7 +4,6 @@ import socket
 import pyaudio
 
 # default configuration parameters
-DEFAULT_SERVER_PORT = 9999
 STREAM_FORMAT = pyaudio.paInt16
 BUFFER_SIZE = 65536
 
@@ -19,11 +18,16 @@ def run_socket_connection(port, audio_stream):
             
             print()
             ip = utils.get_lan_ip(socket)
-            print(f"Your LAN IP: {ip}")
+            print(f"Your LAN IP: \033[95m{ip}\033[0m")
             print(f"Your PORT: \033[95m{port}\033[0m")
-            print('Waiting for client connection...')
+            print()
+            
+            # Detect transmitter and print IP, but continue running
+            transmitter_ip = utils.broadcast_presence(ip, 9678, socket)
+            print(f"Detected Transmitter: {transmitter_ip}")
+
             transmitter, addr = serversocket.accept()
-            print('Client connected.')
+            print('Transmitter connected.')
 
             while True:
                 data = transmitter.recv(BUFFER_SIZE)
@@ -35,14 +39,9 @@ def run_socket_connection(port, audio_stream):
 
         except (ConnectionResetError, ConnectionAbortedError) as e:
             print(f"Connection error: {str(e)}")
-            break  # Exit the outer loop to terminate the server
-        
         finally:
             serversocket.close()
             print("Server socket closed.")
-            break
-
-    print("Server terminated.")
 
 
 
@@ -69,7 +68,7 @@ def main():
                             frames_per_buffer=BUFFER_SIZE,
                             output_device_index=selected_device_id)
 
-        run_socket_connection(DEFAULT_SERVER_PORT, stream)
+        run_socket_connection(9678, stream)
 
     finally:
         print('Shutting down')
