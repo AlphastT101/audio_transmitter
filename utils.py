@@ -90,9 +90,8 @@ def handle_device_selection(selected_device_id_str, valid_devices):
 
 def get_lan_ip(socket):
     try:
-        # Create a socket connection to a dummy address to get the LAN IP
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))  # Google Public DNS (just to determine the local interface)
+        s.connect(("8.8.8.8", 80))
         lan_ip = s.getsockname()[0]
         s.close()
         return lan_ip
@@ -117,10 +116,7 @@ def broadcast_presence(ip, port, socket, time):
         while True:
             # Broadcast the message
             server_socket.sendto(broadcast_message.encode(), broadcast_address)
-            print(f"Broadcasting presence: {broadcast_message}")
-            
-            # Introduce a delay to avoid flooding the network
-            time.sleep(0.5)  # Adjust the delay as needed (e.g., 0.5 seconds)
+            time.sleep(0.1)
             
             response_socket.settimeout(1)
             try:
@@ -129,7 +125,7 @@ def broadcast_presence(ip, port, socket, time):
                     print(f"Detected Transmitter: {addr[0]}")
                     return addr[0]
             except socket.timeout:
-                pass  # No response, continue broadcasting
+                pass
     finally:
         server_socket.close()
         response_socket.close()

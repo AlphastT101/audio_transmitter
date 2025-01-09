@@ -63,7 +63,7 @@ def main():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("Connecting to server...")
     try:
-        sock.connect((addr[0], 9678))
+        sock.connect((addr, 9678))
         print("Connected.")
 
         # Start audio stream
