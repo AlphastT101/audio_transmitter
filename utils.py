@@ -97,36 +97,3 @@ def get_lan_ip(socket):
         return lan_ip
     except Exception as e:
         return f"Error: {e}"
-
-
-def broadcast_presence(ip, port, socket, time):
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    
-    broadcast_message = ip
-    broadcast_address = ('<broadcast>', port)
-    
-    # Create a separate socket to listen for responses on the LAN IP
-    response_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    response_socket.bind(('', port))  # Bind to the LAN IP specifically
-
-    print("Waiting for transmitter to connect...")
-    try:
-        while True:
-            # Broadcast the message
-            server_socket.sendto(broadcast_message.encode(), broadcast_address)
-            time.sleep(9999999)
-            print("bb")
-
-            try:
-                data, addr = response_socket.recvfrom(1024)
-                print(addr, data)
-                if addr[0] != ip:  # Ignore messages from the server's own IP
-                    print(f"Detected Transmitter: {addr[0]}")
-                    return addr[0]
-            except socket.timeout:
-                pass
-    finally:
-        server_socket.close()
-        response_socket.close()

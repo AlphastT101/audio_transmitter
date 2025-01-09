@@ -1,5 +1,4 @@
 import sys
-import time
 import utils
 import socket
 import pyaudio
@@ -12,20 +11,17 @@ BUFFER_SIZE = 65536
 def run_socket_connection(port, audio_stream):
     while True:
         try:
+
             # Create and bind the server socket
             serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             serversocket.bind(('', int(port)))
             serversocket.listen(5)
-            
+
             print()
             ip = utils.get_lan_ip(socket)
             print(f"Your LAN IP: \033[95m{ip}\033[0m")
             print(f"Your PORT: \033[95m{port}\033[0m")
             print()
-            
-            # Detect transmitter and print IP, but continue running
-            transmitter_ip = utils.broadcast_presence(ip, 9678, socket, time)
-            print(f"Detected Transmitter: {transmitter_ip}")
 
             transmitter, addr = serversocket.accept()
             print('Transmitter connected.')

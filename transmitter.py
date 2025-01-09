@@ -37,28 +37,9 @@ def main():
         print("No stereo device detected. Please select a device manually.")
         selected_device = int(input("Enter the device number: "))
 
-    # Broadcast listening
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    client_socket.bind(('', 9678))
 
     print("Listening for server broadcasts...")
-    addr = None
-    try:
-        while True:
-            data, addr = client_socket.recvfrom(1024)
-            print(data, addr)
-            print(f"Detected receiver: {addr[0]}")
-            client_socket.sendto("Hello from Transmitter.".encode(), addr)
-            break  # Break after detecting the receiver
-    except Exception as e:
-        print(f"Error during broadcast detection: {e}")
-    finally:
-        client_socket.close()
-
-    if not addr:
-        print("No receiver detected. Exiting.")
-        return
+    addr = input("Enter the LAN IP address of the receiver device: ")
 
     # Connect to the detected receiver
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
