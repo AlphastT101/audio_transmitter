@@ -25,23 +25,29 @@ I used my PC as the transmitter and phone as the receiver, my phone plays the au
 * Grant every permissions, including file management.
 * Open termux. the the following commands in order:
 ```bash
-pkg update && pkg upgrade```
+pkg update && pkg upgrade
+```
 ```bash
-pkg install python clang libffi portaudio git```
+pkg install python clang libffi portaudio git
+```
 
 * Clone the gihub repo:
 ```bash
-git clone https://github.com/AlphastT101/audio_transmitter.git```
+git clone https://github.com/AlphastT101/audio_transmitter.git
+```
 ```bash
-cd audio_transmitter```
+cd audio_transmitter
+```
 
 * Install required python libraries:
 ```bash
-pip install -r requirements.txt```
+pip install -r requirements.txt
+```
 
 * Since we will play the sound on the phone, so we will run the receiver.py in phone.
 ```bash
-python reveiver.py```
+python reveiver.py
+```
 
 * Now the script will ask you to select an audio device as an output. For most of the device, it's `0: default`. So, enter `0`.
 * Now the script will print your LAN IP and port. You need these info to connect the transmitter.
