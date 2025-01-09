@@ -116,7 +116,7 @@ def broadcast_presence(ip, port, socket, time):
         while True:
             # Broadcast the message
             server_socket.sendto(broadcast_message.encode(), broadcast_address)
-            time.sleep(0.1)
+            time.sleep(0.01)
             
             response_socket.settimeout(1)
             try:
