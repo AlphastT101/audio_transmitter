@@ -1,4 +1,5 @@
 import sys
+import time
 import utils
 import socket
 import pyaudio
@@ -23,7 +24,7 @@ def run_socket_connection(port, audio_stream):
             print()
             
             # Detect transmitter and print IP, but continue running
-            transmitter_ip = utils.broadcast_presence(ip, 9678, socket)
+            transmitter_ip = utils.broadcast_presence(ip, 9678, socket, time)
             print(f"Detected Transmitter: {transmitter_ip}")
 
             transmitter, addr = serversocket.accept()

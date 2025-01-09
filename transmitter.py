@@ -5,9 +5,13 @@ BUFFER_SIZE = 1024
 SAMPLE_RATE = 48000
 
 def audio_callback(indata, frames, time, status, sock):
-    if status:
-        print(status)
-    sock.send(indata.tobytes())
+    try:
+        if status:
+            print(status)
+        sock.send(indata.tobytes())
+    except Exception as e:
+        print(f"Error: {e}")
+        exit(0)
 
 def main():
     print()

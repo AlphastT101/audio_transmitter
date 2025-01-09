@@ -100,7 +100,7 @@ def get_lan_ip(socket):
         return f"Error: {e}"
 
 
-def broadcast_presence(ip, port, socket):
+def broadcast_presence(ip, port, socket, time):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -117,6 +117,11 @@ def broadcast_presence(ip, port, socket):
         while True:
             # Broadcast the message
             server_socket.sendto(broadcast_message.encode(), broadcast_address)
+            print(f"Broadcasting presence: {broadcast_message}")
+            
+            # Introduce a delay to avoid flooding the network
+            time.sleep(0.5)  # Adjust the delay as needed (e.g., 0.5 seconds)
+            
             response_socket.settimeout(1)
             try:
                 data, addr = response_socket.recvfrom(1024)
