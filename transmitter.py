@@ -48,7 +48,7 @@ def main():
         while True:
             data, addr = client_socket.recvfrom(1024)
             print(f"Detected receiver: {addr[0]}")
-            client_socket.sendto(addr)
+            client_socket.sendto("Hello from Transmitter.".encode(), addr)
             break  # Break after detecting the receiver
     except Exception as e:
         print(f"Error during broadcast detection: {e}")
@@ -63,6 +63,7 @@ def main():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("Connecting to server...")
     try:
+        print(str(addr[0]))
         sock.connect((str(addr[0]), 9678))
         print("Connected.")
 

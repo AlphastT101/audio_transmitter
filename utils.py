@@ -116,11 +116,12 @@ def broadcast_presence(ip, port, socket, time):
         while True:
             # Broadcast the message
             server_socket.sendto(broadcast_message.encode(), broadcast_address)
-            time.sleep(0.01)
-            
-            response_socket.settimeout(1)
+            time.sleep(5)
+            print("bb")
+
             try:
                 data, addr = response_socket.recvfrom(1024)
+                print(addr, data)
                 if addr[0] != ip:  # Ignore messages from the server's own IP
                     print(f"Detected Transmitter: {addr[0]}")
                     return addr[0]
