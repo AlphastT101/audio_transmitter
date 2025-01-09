@@ -109,14 +109,14 @@ def broadcast_presence(ip, port, socket, time):
     
     # Create a separate socket to listen for responses on the LAN IP
     response_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    response_socket.bind((ip, port))  # Bind to the LAN IP specifically
+    response_socket.bind(('', port))  # Bind to the LAN IP specifically
 
     print("Waiting for transmitter to connect...")
     try:
         while True:
             # Broadcast the message
             server_socket.sendto(broadcast_message.encode(), broadcast_address)
-            time.sleep(5)
+            time.sleep(9999999)
             print("bb")
 
             try:

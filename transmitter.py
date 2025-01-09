@@ -47,6 +47,7 @@ def main():
     try:
         while True:
             data, addr = client_socket.recvfrom(1024)
+            print(data, addr)
             print(f"Detected receiver: {addr[0]}")
             client_socket.sendto("Hello from Transmitter.".encode(), addr)
             break  # Break after detecting the receiver
