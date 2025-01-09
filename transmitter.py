@@ -37,16 +37,13 @@ def main():
         print("No stereo device detected. Please select a device manually.")
         selected_device = int(input("Enter the device number: "))
 
-
-    print("Listening for server broadcasts...")
-    addr = input("Enter the LAN IP address of the receiver device: ")
+    addr = input("Enter the LAN IP address of the receiver device(the ip that is printed after running receiver.py on the target device): ")
 
     # Connect to the detected receiver
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("Connecting to server...")
     try:
-        print(str(addr[0]))
-        sock.connect((str(addr[0]), 9678))
+        sock.connect(addr, 9678)
         print("Connected.")
 
         # Start audio stream
